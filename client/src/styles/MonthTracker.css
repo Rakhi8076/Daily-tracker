@@ -1,0 +1,117 @@
+/* MAIN CONTAINER */
+.tracker{
+  background:white;
+  padding:25px;
+  border-radius:14px;
+  box-shadow:0 6px 28px rgba(0,0,0,.1);
+  width:100%;
+}
+
+/* ================= MONTH HEADER ================= */
+.month-wrapper{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  position:relative;
+  margin-bottom:25px;
+}
+
+.month-title{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:22px;
+  font-weight:700;
+}
+
+.slide-btn{
+  padding:8px 14px;
+  border-radius:6px;
+  border:1px solid gray;
+  background:white;
+  cursor:pointer;
+  font-size:18px;
+}
+.slide-btn:hover{
+  background:#e5ecff;
+}
+
+/* ================= SCROLLABLE TABLE ================= */
+.month-table-container{
+  width:100%;
+  overflow-x:auto;
+  padding-bottom:8px;
+}
+
+/* ================= HEADER ROW ================= */
+.header-row{
+  display:grid;
+  column-gap:6px;
+  margin-bottom:10px;
+  align-items:center;
+}
+
+.habit-header{
+  width:160px;
+  height:40px;
+  background:#fde9ff;
+  border-radius:6px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:700;
+}
+
+.day-box{
+  width:45px;
+  height:40px;
+  background:#e5ecff;
+  border-radius:6px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:600;
+}
+
+
+/* ================= ROWS ================= */
+.row{
+  display:grid;
+  column-gap:6px;
+  align-items:center;
+  margin-bottom:6px;
+}
+
+.habit-input{
+  width:160px;
+  height:40px;
+  padding:7px;
+  border-radius:6px;
+  border:1px solid gray;
+  box-sizing:border-box;
+}
+
+
+/* ================= CELLS ================= */
+.cell{
+  width:45px;
+  height:40px;
+  background:#f3f3f3;
+  border-radius:6px;
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:18px;
+  transition:.2s;
+}
+
+.cell:hover{
+  background:#d7e3ff;
+}
+
+.active{
+  background:#2563eb;
+  color:white;
+}

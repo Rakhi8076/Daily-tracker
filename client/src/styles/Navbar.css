@@ -1,0 +1,33 @@
+.navbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 35px;
+  background: white;
+  box-shadow: 0 2px 18px rgba(0,0,0,0.08);
+}
+
+.logo{
+  font-size: 26px;
+  font-weight: 900;
+  color: #2563eb;
+}
+
+.menu a{
+  text-decoration: none;
+  margin-left: 25px;
+  font-size: 18px;
+  color: #333;
+  transition: 0.2s;
+}
+
+.menu a:hover{
+  color: #2563eb;
+}
+
+.signup-btn{
+  padding: 6px 14px;
+  border-radius: 6px;
+  background:#2563eb;
+  color:white !important;
+}

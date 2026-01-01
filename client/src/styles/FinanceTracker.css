@@ -1,0 +1,63 @@
+.finance-wrapper{
+  width: 70%;
+  margin: auto;
+}
+
+.finance-title{
+  margin-bottom: 15px;
+}
+
+.month-select{
+  padding: 8px;
+  margin-bottom: 15px;
+}
+
+.summary-box{
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.box{
+  background:#e5ecff;
+  padding:12px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+.finance-form{
+  display:flex;
+  gap:10px;
+}
+
+.select-type,
+.input-amount,
+.input-note{
+  padding:8px;
+}
+
+.btn-add{
+  background:#2563eb;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.finance-table{
+  width:100%;
+  margin-top:20px;
+  border-collapse:collapse;
+}
+
+.finance-table th{
+  text-align:left;
+  padding:8px;
+  border-bottom:2px solid gray;
+}
+
+.finance-table td{
+  padding:8px;
+  border-bottom:1px solid lightgray;
+}
