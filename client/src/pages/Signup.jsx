@@ -1,14 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import api from "../api";
 
 function Signup() {
-
-  // 🔥 SIGNUP PAGE OPEN होते ही COMPLETE LOGOUT
-  // useEffect(() => {
-  //   localStorage.removeItem("token");
-  //   delete api.defaults.headers.common["Authorization"];
-  // }, []);
 
   const [user, setUser] = useState({
     name: "",
@@ -39,7 +33,6 @@ function Signup() {
       if (res.data.success) {
         setSuccess("Signup Successful 🎉");
 
-        // 🔥 AUTO LOGIN AFTER SIGNUP
         try {
           const loginRes = await api.post("/user/login", {
             email: user.email,
@@ -49,7 +42,6 @@ function Signup() {
           if (loginRes.data.success) {
             localStorage.setItem("token", loginRes.data.token);
 
-            // attach token to axios
             api.defaults.headers.common["Authorization"] =
               `Bearer ${loginRes.data.token}`;
 
@@ -64,8 +56,9 @@ function Signup() {
         setError(res.data.message || "Signup Failed ❌");
       }
 
-    } catch {
+    } catch (err) {
       setError("Signup Failed ❌");
+      console.log("SIGNUP ERROR", err);
     }
   };
 
@@ -94,9 +87,11 @@ function Signup() {
       )}
 
       <form onSubmit={submitSignup}>
+
         <input
           name="name"
           placeholder="Name"
+          value={user.name}
           onChange={handleChange}
           style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
         />
@@ -104,6 +99,7 @@ function Signup() {
         <input
           name="email"
           placeholder="Email"
+          value={user.email}
           onChange={handleChange}
           style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
         />
@@ -112,11 +108,13 @@ function Signup() {
           name="password"
           placeholder="Password"
           type="password"
+          value={user.password}
           onChange={handleChange}
           style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
         />
 
         <button
+          type="submit"
           style={{
             width: "100%",
             padding: "8px",
@@ -124,10 +122,12 @@ function Signup() {
             color: "white",
             borderRadius: "6px",
             border: "none",
+            cursor: "pointer",
           }}
         >
           Signup
         </button>
+
       </form>
     </div>
   );

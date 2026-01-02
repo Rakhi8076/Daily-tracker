@@ -1,12 +1,11 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api"
+  baseURL: "https://daily-tracker-402u.onrender.com/api"   // ← your backend URL
 });
 
 const token = localStorage.getItem("token");
-
-if(token){
+if (token) {
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
