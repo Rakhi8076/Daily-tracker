@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://daily-tracker-402u.onrender.com/api"   // ← your backend URL
+  baseURL: "https://resourceful-laughter-production.up.railway.app/"   // ← your backend URL
 });
 
 const token = localStorage.getItem("token");
