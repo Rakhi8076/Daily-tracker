@@ -1,136 +1,115 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import api from "../api";
+import "../styles/Signup.css";
 
 function Signup() {
-
   const [user, setUser] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
   });
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setUser({
-      ...user,
+    setUser((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
   const submitSignup = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setLoading(true);
 
     try {
-      const res = await api.post("/user/signup", user);
+      // ✅ SIGNUP (correct route)
+      const res = await api.post("/users/signup", user);
 
-      if (res.data.success) {
-        setSuccess("Signup Successful 🎉");
+      if (!res.data?.success) {
+        setError(res.data?.message || "Signup failed ❌");
+        return;
+      }
 
-        try {
-          const loginRes = await api.post("/user/login", {
-            email: user.email,
-            password: user.password
-          });
+      setSuccess("Signup successful 🎉 Logging you in...");
 
-          if (loginRes.data.success) {
-            localStorage.setItem("token", loginRes.data.token);
+      // ✅ AUTO LOGIN
+      const loginRes = await api.post("/users/login", {
+        email: user.email,
+        password: user.password,
+      });
 
-            api.defaults.headers.common["Authorization"] =
-              `Bearer ${loginRes.data.token}`;
+      if (loginRes.data?.success) {
+        const token = loginRes.data.token;
 
-            setTimeout(() => navigate("/dashboard"), 1200);
-          }
+        // store token
+        localStorage.setItem("token", token);
 
-        } catch {
-          setError("Signup done but login failed, please login manually ❌");
-        }
+        // set default header
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+        // redirect
+        setTimeout(() => navigate("/dashboard"), 1000);
       } else {
-        setError(res.data.message || "Signup Failed ❌");
+        setError("Signup done but login failed ❌");
       }
 
     } catch (err) {
-      setError("Signup Failed ❌");
-      console.log("SIGNUP ERROR", err);
+      console.error("Signup error:", err);
+      setError(err.response?.data?.message || "Something went wrong ❌");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ width: "350px", margin: "auto" }}>
-      <h2>Signup</h2>
+    <div className="signup-container">
+      <h2 className="signup-title">Signup</h2>
 
-      {success && (
-        <div style={{
-          background: "green",
-          color: "white",
-          padding: "10px",
-          borderRadius: "6px",
-          marginBottom: "10px",
-          textAlign: "center",
-          fontWeight: "bold",
-        }}>
-          {success}
-        </div>
-      )}
+      {success && <div className="success-msg">{success}</div>}
+      {error && <div className="error-msg">{error}</div>}
 
-      {error && (
-        <p style={{ color: "red", fontWeight: "bold" }}>
-          {error}
-        </p>
-      )}
-
-      <form onSubmit={submitSignup}>
-
+      <form onSubmit={submitSignup} className="signup-form">
         <input
           name="name"
           placeholder="Name"
           value={user.name}
           onChange={handleChange}
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          required
         />
 
         <input
           name="email"
+          type="email"
           placeholder="Email"
           value={user.email}
           onChange={handleChange}
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          required
         />
 
         <input
           name="password"
-          placeholder="Password"
           type="password"
+          placeholder="Password"
           value={user.password}
           onChange={handleChange}
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          required
         />
 
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: "8px",
-            background: "#2563eb",
-            color: "white",
-            borderRadius: "6px",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          Signup
+        <button type="submit" disabled={loading}>
+          {loading ? "Signing up..." : "Signup"}
         </button>
-
       </form>
     </div>
   );
 }
 
 export default Signup;
+

@@ -1,12 +1,10 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://resourceful-laughter-production.up.railway.app/api"
+  baseURL: "http://localhost:5000/api", // 🔥 MOST IMPORTANT
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
-
-const token = localStorage.getItem("token");
-if (token) {
-  api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-}
 
 export default api;

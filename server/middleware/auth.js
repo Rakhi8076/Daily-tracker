@@ -3,22 +3,44 @@ const User = require("../models/User");
 
 module.exports = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    
-    if (!token) return res.status(401).json({ message: "No token" });
+    // 🔐 Get token from header
+    const authHeader = req.headers.authorization;
 
-    const decode = jwt.verify(token, process.env.JWT_SECRET);
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        message: "Authorization token missing",
+      });
+    }
 
-    const user = await User.findById(decode.id).select("name email");
+    const token = authHeader.split(" ")[1];
+
+    // 🔑 Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // 🔍 Find user
+    const user = await User.findById(decoded.id).select("-password");
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // ✅ Attach user to request
     req.user = {
       id: user._id,
       name: user.name,
-      email: user.email
+      email: user.email,
     };
 
     next();
 
   } catch (err) {
-    return res.status(401).json({ message: "Auth failed" });
+    console.error("Auth Middleware Error:", err.message);
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired token",
+    });
   }
 };
