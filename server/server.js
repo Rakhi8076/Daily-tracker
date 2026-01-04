@@ -27,7 +27,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/weekly", weeklyRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/finance", financeRoutes);
-
++ app.use("/api/users", userRoutes);
 // ===== Default Route =====
 app.get("/", (req, res) => {
   res.send("Backend Running Successfully 🚀");
